@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+latest_request.pretty.json
+ScreenShot_*.jpg

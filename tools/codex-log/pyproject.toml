@@ -1,0 +1,13 @@
+[project]
+name = "codex-log"
+version = "0.1.0"
+description = "Inspect Codex SQLite websocket request and event payloads."
+readme = "README.md"
+requires-python = ">=3.12"
+
+[project.scripts]
+codex-log = "codex_log.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
