@@ -1,18 +1,18 @@
 # test_openrouter
 
-一个用于验证 Anthropic 兼容聊天接口是否可访问、鉴权是否生效的最小测试工具。
+`test_openrouter` is a minimal probe tool for verifying that an Anthropic-compatible chat endpoint is reachable and that authentication succeeds.
 
-当前脚本会读取本地 `.env` 中的配置，向 `POST {ANTHROPIC_BASE_URL}/messages` 发起一次请求，请求体固定为一条用户消息 `只回复 pong`，并打印响应状态码、`content-type` 和返回体。
+The script loads configuration from a local `.env` file, sends a single `POST {ANTHROPIC_BASE_URL}/messages` request, and prints the response status code, response content type, and response body.
 
-## 环境要求
+## Requirements
 
 - Python `3.12+`
 - `uv`
-- 可用的 Anthropic 兼容接口地址
+- an accessible Anthropic-compatible endpoint
 
-## 配置
+## Configuration
 
-在 `tools/test_openrouter/.env` 中设置以下环境变量：
+Create `tools/test_openrouter/.env` with the following variables:
 
 ```env
 ANTHROPIC_AUTH_TOKEN=your_token
@@ -20,35 +20,39 @@ ANTHROPIC_BASE_URL=https://your-endpoint.example.com/v1
 ANTHROPIC_MODEL=your-model-id
 ```
 
-说明：
+Variable meanings:
 
-- `ANTHROPIC_AUTH_TOKEN`：接口鉴权 token
-- `ANTHROPIC_BASE_URL`：接口基础地址，脚本会自动拼接 `/messages`
-- `ANTHROPIC_MODEL`：请求使用的模型名
+- `ANTHROPIC_AUTH_TOKEN`: bearer token used for authentication
+- `ANTHROPIC_BASE_URL`: base API URL; the script automatically appends `/messages`
+- `ANTHROPIC_MODEL`: model identifier sent in the request payload
 
-## 安装依赖
+## Install Dependencies
 
 ```bash
 cd tools/test_openrouter
 uv sync
 ```
 
-## 运行
+## Run
 
 ```bash
 cd tools/test_openrouter
 uv run python main.py
 ```
 
-## 预期结果
+## Request Behavior
 
-请求成功时，输出会包含：
+The probe sends a single user message with the fixed content `只回复 pong` and uses a small `max_tokens` value so the response stays lightweight.
+
+## Expected Output
+
+On success, the output includes:
 
 - `status_code = 200`
-- 返回头中的 `content-type`
-- JSON 响应体
+- the response `content-type`
+- the parsed JSON body, when available
 - `验证结果：接口可访问，鉴权已通过。`
 
-如果配置缺失，脚本会直接退出并提示缺少哪个环境变量。
+If configuration is missing, the script exits immediately and reports which environment variable is absent.
 
-如果接口返回非 2xx，脚本会打印 HTTP 状态码和响应正文，随后抛出异常，便于排查鉴权、路由或模型配置问题。
+If the endpoint returns a non-2xx response, the script prints the HTTP status code and response body before re-raising the error for debugging.
