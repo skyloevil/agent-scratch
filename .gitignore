@@ -2,5 +2,19 @@
 __pycache__/
 .pytest_cache/
 *.pyc
+
+# Node / TypeScript
+node_modules/
+dist/
+build/
+coverage/
+npm-debug.log*
+
+# Local environment and OS files
+.env
+.env.*
+.DS_Store
+
+# Local scratch artifacts
 latest_request.pretty.json
 ScreenShot_*.jpg
